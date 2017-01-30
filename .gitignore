@@ -62,3 +62,6 @@ target/
 .ipynb_checkpoints
 
 node_modules/
+
+#サンプルファイル
+in.text

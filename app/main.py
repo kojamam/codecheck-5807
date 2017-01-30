@@ -53,15 +53,12 @@ def reqAPI(keywords, startDatetime, endDatetime):
         query = ''
 
         tmpStartDatetime = startDatetime
-        tmpEndDatetime = startDatetime + datetime.timedelta(days=7)
+        tmpEndDatetime = startDatetime + datetime.timedelta(days=6)
 
         while tmpEndDatetime < endDatetime:
             query = 'q=Body:' + keyword + ' AND ' + 'ReleaseDate:[' + tmpStartDatetime.strftime("%Y-%m-%d") + ' TO ' + tmpEndDatetime.strftime("%Y-%m-%d") + ']'
 
             url = baseurl + '&' + query
-
-            tmpStartDatetime = tmpEndDatetime + datetime.timedelta(days=1)
-            tmpEndDatetime = tmpStartDatetime + datetime.timedelta(days=7)
 
             req = urllib.request.Request(urlEncode(url))
 
@@ -71,6 +68,10 @@ def reqAPI(keywords, startDatetime, endDatetime):
             root = ET.fromstring(XmlData)
 
             numFounds[keyword].append(int(root[2].attrib['numFound']))
+            # print(keyword, tmpStartDatetime, tmpEndDatetime,int(root[2].attrib['numFound']))
+
+            tmpStartDatetime = tmpEndDatetime + datetime.timedelta(days=1)
+            tmpEndDatetime = tmpStartDatetime + datetime.timedelta(days=6)
 
     return numFounds
-main([])
+# main([])
