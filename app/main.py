@@ -9,25 +9,15 @@ from urllib.parse import urlparse
 import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
-def main(argv):
-    for v in argv:
-        print(v)
-
-    lines = []
-    for line in sys.stdin:
-        # lines.append(line.rstrip())
-        line = line.rstrip()
-        (startDateStr, endDateStr) = line.split("]")[1].split()
-        keywords = [str.strip().strip('"') for str in line.split("]")[0][1:].split(",")]
-
-    # sys.stderr.write(keywords[0])
-    # keywords = [str.strip().strip('"') for str in lines[0][1:len(lines[0])-1].split(",")]
-        startDatetime = datetime.datetime.strptime(startDateStr, '%Y-%m-%d')
-        endDatetime = datetime.datetime.strptime(endDateStr, '%Y-%m-%d')
-        sys.stderr.write("dddddddddddddddd")
-        # calcCoeff(reqAPI(keywords, startDatetime, endDatetime))
-
-    return 0
+def printResult(corrMatrix):
+    print("{")
+    print("\"coefficients\" :[",)
+    for vec in corrMatrix:
+        print("[",)
+        for corr in vec:
+            print(corr,",",)
+        print("]")
+    print("}")
 
 def calcCoeff(data):
     dataFrame = pandas.DataFrame(data)
@@ -79,4 +69,14 @@ def reqAPI(keywords, startDatetime, endDatetime):
             tmpEndDatetime = tmpStartDatetime + datetime.timedelta(days=6)
 
     return numFounds
-main([])
+
+def main(argv):
+
+    (startDateStr, endDateStr) = (argv[1], argv[2])
+    keywords = [str.strip().strip('"') for str in argv[0].split("]")[0][1:].split(",")]
+
+    startDatetime = datetime.datetime.strptime(startDateStr, '%Y-%m-%d')
+    endDatetime = datetime.datetime.strptime(endDateStr, '%Y-%m-%d')
+    calcCoeff(reqAPI(keywords, startDatetime, endDatetime))
+
+    return 0
