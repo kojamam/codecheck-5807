@@ -63,7 +63,7 @@ def reqAPI(keywords, startDatetime, endDatetime):
             root = ET.fromstring(XmlData)
 
             numFounds[keyword].append(int(root[2].attrib['numFound']))
-            print(keyword, tmpStartDatetime, tmpEndDatetime,int(root[2].attrib['numFound']))
+            # print(keyword, tmpStartDatetime, tmpEndDatetime,int(root[2].attrib['numFound']))
 
             tmpStartDatetime = tmpEndDatetime + datetime.timedelta(days=1)
             tmpEndDatetime = tmpStartDatetime + datetime.timedelta(days=6)
