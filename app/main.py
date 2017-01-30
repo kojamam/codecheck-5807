@@ -24,6 +24,8 @@ def main(argv):
 
         calcCoeff(reqAPI(keywords, startDatetime, endDatetime))
 
+    print("AAAAAAAAAAAAAAAAA")
+
 def calcCoeff(data):
     dataFrame = pandas.DataFrame(data)
     corrMatrix = dataFrame.corr().round(3).as_matrix().tolist()
