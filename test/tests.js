@@ -14,7 +14,6 @@ describe("jsontest", () => {
       return app.codecheck(c.input)
         .then(result => {
           assert.equal(result.code, 0);
-          console.log(result.stdout[0]);
           assert.equal(result.stdout[0], JSON.stringify(c.output));
         });
     });
