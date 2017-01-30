@@ -19,10 +19,10 @@ def main(argv):
         (startDateStr, endDateStr) = line.split("]")[1].split()
         keywords = [str.strip().strip('"') for str in line.split("]")[0][1:].split(",")]
 
-    startDatetime = datetime.datetime.strptime(startDateStr, '%Y-%m-%d')
-    endDatetime = datetime.datetime.strptime(endDateStr, '%Y-%m-%d')
+        startDatetime = datetime.datetime.strptime(startDateStr, '%Y-%m-%d')
+        endDatetime = datetime.datetime.strptime(endDateStr, '%Y-%m-%d')
 
-    calcCoeff(reqAPI(keywords, startDatetime, endDatetime))
+        calcCoeff(reqAPI(keywords, startDatetime, endDatetime))
 
 def calcCoeff(data):
     dataFrame = pandas.DataFrame(data)
@@ -73,3 +73,4 @@ def reqAPI(keywords, startDatetime, endDatetime):
             numFounds[keyword].append(int(root[2].attrib['numFound']))
 
     return numFounds
+main([])
