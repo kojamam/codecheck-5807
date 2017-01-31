@@ -10,20 +10,35 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
 def printResult(corrMatrix):
-    print("{")
-    print("\"coefficients\" :[",)
+    res = '{"coefficients": ['
+    i = 0
     for vec in corrMatrix:
-        print("[",)
+        j = 0
+        res += "["
         for corr in vec:
-            print(corr,",",)
-        print("]")
-    print("}")
+            if j < len(vec) - 1:
+                res += str(corr) + ","
+            else:
+                res += str(corr) + "]"
+
+            j += 1
+
+        if i < len(corrMatrix) - 1:
+            res += ","
+        else:
+            res += "], "
+        i +=1
+    res += '"posChecker": true}'
+
+    print(res)
+
+
 
 def calcCoeff(data):
     dataFrame = pandas.DataFrame(data)
     corrMatrix = dataFrame.corr().round(3).as_matrix().tolist()
 
-    print(json.dumps({'coefficients': corrMatrix, 'posChecker':True}))
+    return corrMatrix
 
 def urlEncode(url):
     p = urlparse(url)
@@ -63,7 +78,6 @@ def reqAPI(keywords, startDatetime, endDatetime):
             root = ET.fromstring(XmlData)
 
             numFounds[keyword].append(int(root[2].attrib['numFound']))
-            # print(keyword, tmpStartDatetime, tmpEndDatetime,int(root[2].attrib['numFound']))
 
             tmpStartDatetime = tmpEndDatetime + datetime.timedelta(days=1)
             tmpEndDatetime = tmpStartDatetime + datetime.timedelta(days=6)
@@ -77,6 +91,10 @@ def main(argv):
 
     startDatetime = datetime.datetime.strptime(startDateStr, '%Y-%m-%d')
     endDatetime = datetime.datetime.strptime(endDateStr, '%Y-%m-%d')
-    calcCoeff(reqAPI(keywords, startDatetime, endDatetime))
+    corrMatrix = calcCoeff(reqAPI(keywords, startDatetime, endDatetime))
+    printResult(corrMatrix)
+
 
     return 0
+
+# main(sys.argv[1:])
